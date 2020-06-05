@@ -1,9 +1,8 @@
-﻿
-
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// 这里可以使用Singleton 来管理
+/// </summary>
 public class RedPointSystem
 {
     public delegate void OnPointNumChange(RedPointNode node);// 红点变化通知
@@ -91,13 +90,34 @@ public class RedPointSystem
     /// <param name="number"></param>
     public void SetInvoke(string strNode, int number)
     {
+        var lefNode = GetLefNode(strNode);
+        lefNode?.SetLefRedPointNum(number); // 设置节点的红点数量
+    }
+    /// <summary>
+    /// 获得当前节点的红点数量
+    /// </summary>
+    /// <param name="strNode"></param>
+    /// <returns></returns>
+    public int GetNumber(string strNode) 
+    {
+        var lefNode = GetLefNode(strNode);
+        return lefNode == null ? 0 : lefNode.pointNum;
+    }
+
+    /// <summary>
+    /// 获得叶子节点
+    /// </summary>
+    /// <param name="strNode"></param>
+    /// <returns></returns>
+    public RedPointNode GetLefNode(string strNode)
+    {
         var nodeList = strNode.Split('.');
         if (nodeList.Length == 1)
         {
             if (nodeList[0] != RedPointConsts.main)
             {
                 Debug.Log("Get Wrong Root Node! Current Is: " + nodeList[0]);
-                return;
+                return null;
             }
         }
         
@@ -107,15 +127,16 @@ public class RedPointSystem
             if (!node.childrenDic.ContainsKey(nodeList[i]))
             {
                 Debug.Log("Does Not Contains Child Node: " + nodeList[i]);
-                return;
+                return null;
             }
             node = node.childrenDic[nodeList[i]];
 
             if (i == nodeList.Length - 1) // 最后一个节点了
             {
-                node.SetLefRedPointNum(number); // 设置节点的红点数量
+                return node;
             }
         }
+        return node;
     }
     
     

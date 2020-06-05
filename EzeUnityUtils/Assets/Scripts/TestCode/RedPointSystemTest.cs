@@ -13,19 +13,37 @@ public class RedPointSystemTest : MonoBehaviour
     
     public GameObject dailyTaskRed;
     public Text dailyTaskRedNumText;
+
+    private RedPointSystem _rpSystem = null;
     
     // Start is called before the first frame update
     void Start()
     {
-        var rpSystem = new RedPointSystem();
-        rpSystem.InitRedPointTreeNode();
+        this._rpSystem = new RedPointSystem();
+        this._rpSystem.InitRedPointTreeNode();
         
-        rpSystem.SetRedPointNodeCallback(RedPointConsts.task, OnTaskChangeCallback);
-        rpSystem.SetRedPointNodeCallback(RedPointConsts.mainTask, OnMainTaskChangeCallback);
-        rpSystem.SetRedPointNodeCallback(RedPointConsts.dailyTask, OnDailyTaskChangeCallback);
+        this._rpSystem.SetRedPointNodeCallback(RedPointConsts.task, OnTaskChangeCallback);
+        this._rpSystem.SetRedPointNodeCallback(RedPointConsts.mainTask, OnMainTaskChangeCallback);
+        this._rpSystem.SetRedPointNodeCallback(RedPointConsts.dailyTask, OnDailyTaskChangeCallback);
         
-        rpSystem.SetInvoke(RedPointConsts.mainTask, 1);
-        rpSystem.SetInvoke(RedPointConsts.dailyTask, 5);
+        this._rpSystem.SetInvoke(RedPointConsts.mainTask, 1);
+        this._rpSystem.SetInvoke(RedPointConsts.dailyTask, 5);
+        
+        // 启动的时候刷新数量
+        this.refershRedPoints();
+    }
+
+    private void refershRedPoints()
+    {
+        int number = _rpSystem.GetNumber(RedPointConsts.task);
+        taskRed.SetActive(number > 0);
+        taskRedNumText.text = number.ToString();
+        number = _rpSystem.GetNumber(RedPointConsts.mainTask);
+        mainTaskRed.SetActive(number > 0);
+        mainTaskRedNumText.text = number.ToString();
+        number = _rpSystem.GetNumber(RedPointConsts.dailyTask);
+        dailyTaskRed.SetActive(number > 0);
+        dailyTaskRedNumText.text = number.ToString();
     }
 
 
@@ -49,4 +67,7 @@ public class RedPointSystemTest : MonoBehaviour
         dailyTaskRed.SetActive(node.pointNum > 0);
         dailyTaskRedNumText.text = node.pointNum.ToString();
     }
+    
+    
+    
 }
