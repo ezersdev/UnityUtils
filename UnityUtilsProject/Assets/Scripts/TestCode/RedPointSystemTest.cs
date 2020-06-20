@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -67,7 +68,20 @@ public class RedPointSystemTest : MonoBehaviour
         dailyTaskRed.SetActive(node.pointNum > 0);
         dailyTaskRedNumText.text = node.pointNum.ToString();
     }
-    
-    
-    
+
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.A))
+        {
+            var taskNum = this._rpSystem.GetNumber(RedPointConsts.mainTask);
+            this._rpSystem.SetInvoke(RedPointConsts.mainTask, taskNum + 1);
+        }
+        
+        if (Input.GetKey(KeyCode.D))
+        {
+            var taskNum = this._rpSystem.GetNumber(RedPointConsts.dailyTask);
+            this._rpSystem.SetInvoke(RedPointConsts.dailyTask, taskNum + 1);
+        }
+    }
 }
