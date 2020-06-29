@@ -52,6 +52,17 @@ namespace EditorExtention
             {
                 Debug.Log("Continue");
             }
+            else
+            {
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                var defaultAssembly = assemblies.First(assembly => assembly.GetName().Name == "Assembly-CSharp");
+                var ComType = defaultAssembly.GetType(className);
+                
+                Debug.Log(ComType);
+
+                var gameObject = GameObject.Find(className);
+                gameObject.AddComponent(ComType);
+            }
             
         }
         
