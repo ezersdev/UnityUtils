@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using RedPointSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,12 +16,12 @@ public class RedPointSystemTest : MonoBehaviour
     public GameObject dailyTaskRed;
     public Text dailyTaskRedNumText;
 
-    private RedPointSystem _rpSystem = null;
+    private RedPointSystem.RedPointSystem _rpSystem = null;
     
     // Start is called before the first frame update
     void Start()
     {
-        this._rpSystem = new RedPointSystem();
+        this._rpSystem = new RedPointSystem.RedPointSystem();
         this._rpSystem.InitRedPointTreeNode();
         
         this._rpSystem.SetRedPointNodeCallback(RedPointConsts.task, OnTaskChangeCallback);
